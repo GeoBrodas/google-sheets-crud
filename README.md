@@ -6,10 +6,10 @@ A boiler plate code for getting started with Google Sheets API.
 
 Contributions are always welcome!
 
-### Improvements?
+### What's new in v1.5?
 
-- The code needs a bit of refactoring
-- Anyone who has handled filter and update operation.
+- Refactored code🤘
+- Added few comments for readability.
 
 ## Tech Stack
 
@@ -35,19 +35,19 @@ Install dependencies
   npm install
 ```
 
-Create a new `.env` file.
+- Create a new `.env` file.
 
-Make a new project in Google Cloud console.
+- Make a new project in Google Cloud console.
 
-Integrate Google sheets API with the project.
+- Integrate Google sheets API with the project.
 
-Make a new service account, and a new Key.
+- Make a new service account, and a new Key.
 
-Copy the downloaded file to your remote workspace and rename it as `credentials.json`.
+- Copy the downloaded file to your remote workspace and rename it as `credentials.json`.
 
-Add the service email to the newly created Google sheets file at https://docs.google.com/spreadsheets
+- Add the service email to the newly created Google sheets file at https://docs.google.com/spreadsheets
 
-Start the server
+- Start the server
 
 ```bash
   npm run dev

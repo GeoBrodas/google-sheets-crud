@@ -3,22 +3,41 @@ const express = require('express');
 const { google } = require('googleapis');
 const app = express();
 
-//fetches data from the spreadsheet
-app.get('/', async (req, res) => {
+const spreadsheetId = process.env.DATABASE_ID;
+
+// --- helper functions ---
+// get meta-data
+async function getMetaData(auth, spreadsheetId) {
+  const getMetaData = await googleSheet.spreadsheets.get({
+    auth,
+    spreadsheetId,
+  });
+  //use this method to get values like sheetID.
+  return getMetaData;
+}
+
+// get auth token
+function getAuth() {
   const auth = new google.auth.GoogleAuth({
     keyFile: 'credentials.json',
     scopes: 'https://www.googleapis.com/auth/spreadsheets',
   });
+  return auth;
+}
 
+async function getGoogleSheet(auth) {
   const client = await auth.getClient();
   const googleSheet = google.sheets({ version: 'v4', auth: client });
-  const spreadsheetId = process.env.DATABASE_ID;
+  return googleSheet;
+}
+// --- helper functions ---
 
-  // const getMetaData = await googleSheet.spreadsheets.get({
-  //   auth,
-  //   spreadsheetId,
-  // });
-  // use this method to get values like sheetID.
+//fetches data from the spreadsheet
+app.get('/', async (req, res) => {
+  const auth = getAuth();
+  const googleSheet = await getGoogleSheet(auth);
+
+  //const metadata = getMetaData(auth, spreadsheetId, googleSheet);
 
   const getSheetData = await googleSheet.spreadsheets.values.get({
     auth,
@@ -31,14 +50,8 @@ app.get('/', async (req, res) => {
 
 //posts data to cell
 app.post('/post', async (req, res) => {
-  const auth = new google.auth.GoogleAuth({
-    keyFile: 'credentials.json',
-    scopes: 'https://www.googleapis.com/auth/spreadsheets',
-  });
-
-  const client = await auth.getClient();
-  const googleSheet = google.sheets({ version: 'v4', auth: client });
-  const spreadsheetId = process.env.DATABASE_ID;
+  const auth = getAuth();
+  const googleSheet = await getGoogleSheet(auth);
 
   await googleSheet.spreadsheets.values.append({
     auth,
@@ -46,7 +59,7 @@ app.post('/post', async (req, res) => {
     range: 'Sheet1!A2:B',
     valueInputOption: 'USER_ENTERED',
     resource: {
-      values: [['Kayne', 'Create a makeup app']],
+      values: [['NextJS', 'The framework of the future']],
     },
   });
 
@@ -55,14 +68,8 @@ app.post('/post', async (req, res) => {
 
 // deletes cell data
 app.post('/delete', async (req, res) => {
-  const auth = new google.auth.GoogleAuth({
-    keyFile: 'credentials.json',
-    scopes: 'https://www.googleapis.com/auth/spreadsheets',
-  });
-
-  const client = await auth.getClient();
-  const googleSheet = google.sheets({ version: 'v4', auth: client });
-  const spreadsheetId = process.env.DATABASE_ID;
+  const auth = getAuth();
+  const googleSheet = await getGoogleSheet(auth);
 
   await googleSheet.spreadsheets.values.clear({
     auth,
@@ -75,14 +82,8 @@ app.post('/delete', async (req, res) => {
 
 // update cell data
 app.put('/update', async (req, res) => {
-  const auth = new google.auth.GoogleAuth({
-    keyFile: 'credentials.json',
-    scopes: 'https://www.googleapis.com/auth/spreadsheets',
-  });
-
-  const client = await auth.getClient();
-  const googleSheet = google.sheets({ version: 'v4', auth: client });
-  const spreadsheetId = process.env.DATABASE_ID;
+  const auth = getAuth();
+  const googleSheet = await getGoogleSheet(auth);
 
   await googleSheet.spreadsheets.values.update({
     auth,
