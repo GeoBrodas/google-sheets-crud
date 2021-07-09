@@ -6,16 +6,6 @@ const app = express();
 const spreadsheetId = process.env.DATABASE_ID;
 
 // --- helper functions ---
-// get meta-data
-async function getMetaData(auth, spreadsheetId) {
-  const getMetaData = await googleSheet.spreadsheets.get({
-    auth,
-    spreadsheetId,
-  });
-  //use this method to get values like sheetID.
-  return getMetaData;
-}
-
 // get auth token
 function getAuth() {
   const auth = new google.auth.GoogleAuth({
@@ -25,6 +15,7 @@ function getAuth() {
   return auth;
 }
 
+// proccure googleSheet method
 async function getGoogleSheet(auth) {
   const client = await auth.getClient();
   const googleSheet = google.sheets({ version: 'v4', auth: client });
@@ -37,7 +28,10 @@ app.get('/', async (req, res) => {
   const auth = getAuth();
   const googleSheet = await getGoogleSheet(auth);
 
-  //const metadata = getMetaData(auth, spreadsheetId, googleSheet);
+  // const getMetaData = await googleSheet.spreadsheets.get({
+  //   auth,
+  //   spreadsheetId,
+  // });
 
   const getSheetData = await googleSheet.spreadsheets.values.get({
     auth,
