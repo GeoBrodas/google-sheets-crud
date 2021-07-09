@@ -6,7 +6,7 @@ A boiler plate code for getting started with Google Sheets API.
 
 Contributions are always welcome!
 
-### What's new in v1.5?
+### What's new in v1.0?
 
 - Refactored code🤘
 - Added few comments for readability.
