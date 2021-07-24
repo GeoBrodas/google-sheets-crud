@@ -52,6 +52,7 @@ Install dependencies
 ```bash
   npm run dev
 ```
+> For full step-by-step tutorial visit this [Blog](https://blog.logrocket.com/build-crud-api-using-google-sheets-api/)!
 
 ## Support
 
